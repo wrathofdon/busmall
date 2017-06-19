@@ -7,20 +7,27 @@ var clicks = 0;
 var limit = 25;
 var temp;
 var display = document.getElementById('display');
+// var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif'];
 var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
 var Product = function(filename) {
   this.url = 'images/' + filename;
   this.clicks = 0;
   this.shown = 0;
-  products.push(this);};
+  products.push(this);
+};
 
 for (var i = 0; i < filenames.length; i++) {
   temp = new Product(filenames[i]);
-  console.log(temp);}
+}
 
-function render(id, option) {
-  products[id].shown += 1;
+function render(product, id) {
+  console.log(products[product].url);
+  // products[product].shown += 1;
+  // var img = document.createElement('img');
+  // img.setAttribute('src', products[product].url);
+  // img.setAttribute('id', id);
+  // display.append(img);
   // add html to render image
 };
 
@@ -40,16 +47,18 @@ function showResults() {
   //show results
 }
 
-display.addEventListener('click', function (event) {
-  var answer = event.target.getAttribute('id');
-  products[id].clicks += 1;
-  clicks += 1;
-  if (click < limit) {
-    presentChoices();
-  } else {
-    showResults();
-  }
-});
+presentChoices();
+
+// display.addEventListener('click', function (event) {
+//   var id = event.target.getAttribute('id');
+//   products[id].clicks += 1;
+//   clicks += 1;
+//   if (clicks < limit) {
+//     presentChoices();
+//   } else {
+//     showResults();
+//   };
+// });
 
 // construct objects from filenames
 
