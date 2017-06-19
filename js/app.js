@@ -1,16 +1,55 @@
 'use strict';
 
-var products = []
-var previous_ids = []
-var current_ids = []
-var clicks = 0
+var products = [];
+var previous_ids = [];
+var current_ids = [];
+var clicks = 0;
+var limit = 25;
+var temp;
+var display = document.getElementById('display');
+var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
 var Product = function(filename) {
   this.url = 'images/' + filename;
   this.clicks = 0;
   this.shown = 0;
-  products.push(this)
+  products.push(this);};
+
+for (var i = 0; i < filenames.length; i++) {
+  temp = new Product(filenames[i]);
+  console.log(temp);}
+
+function render(id, option) {
+  products[id].shown += 1;
+  // add html to render image
 };
+
+function presentChoices() {
+  previous_ids = current_ids.slice(0);
+  current_ids = [];
+  while (current_ids.length < 3) {
+    while(!current_ids.length || current_ids.indexOf(temp) > -1 || previous_ids.indexOf(temp) > -1) {
+      temp = Math.floor(Math.random() * products.length);
+    }
+    render(temp, current_ids.length);
+    current_ids.push(temp);
+    products[temp].clicks += 1;
+  }};
+
+function showResults() {
+  //show results
+}
+
+display.addEventListener('click', function (event) {
+  var answer = event.target.getAttribute('id');
+  products[id].clicks += 1;
+  clicks += 1;
+  if (click < limit) {
+    presentChoices();
+  } else {
+    showResults();
+  }
+});
 
 // construct objects from filenames
 
