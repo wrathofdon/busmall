@@ -16,6 +16,7 @@ var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfas
 
 var Product = function(filename) {
   // generates new object from filename and pushes to an array
+  this.name = filename.slice(0, filename.indexOf('.'));
   this.url = 'img/' + filename;
   this.clicks = 0;
   this.shown = 0;
@@ -48,7 +49,9 @@ function render(key) {
   products[key].shown += 1;
   img.setAttribute('src', products[key].url);
   img.setAttribute('id', key);
-  img.setAttribute('width', "30%");
+  img.setAttribute('width', '30%');
+  img.setAttribute('title', products[key].name);
+  img.setAttribute('alt', products[key].name);
   display.append(img);}
 
 
