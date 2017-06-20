@@ -2,6 +2,7 @@
 
 // array of objects
 var products = [];
+var dataset = [[], [], [], []];
 // prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
 // number of clicks so far
@@ -20,6 +21,7 @@ var Product = function(filename) {
   this.url = 'img/' + filename;
   this.clicks = 0;
   this.shown = 0;
+  this.pvalue = 0;
   products.push(this);};
 
 for (i = 0; i < filenames.length; i++) {
@@ -86,45 +88,97 @@ function generateRGB() {
 
 
 function results() {
-  //generate results
   display.innerHTML = '';
   heading.innerHTML = 'Results:';
-  var row = document.createElement('tr');
-  // percentile is more useful than percent
-  var topRow = ['Image:', 'Appearences:', 'Clicks:', 'Percentile:'];
-  for (i = 0; i < 4; i++) {
-    var cell = document.createElement('th');
-    cell.textContent = topRow[i];
-    row.append(cell);
-  }
-  thead.append(row);
   for (i = 0; i < products.length; i++) {
-    row = document.createElement('tr');
-    cell = document.createElement('th');
-    var img = document.createElement('img');
-    img.setAttribute('src', products[i].url);
-    img.setAttribute('width', '50%');
-    cell.append(img);
-    row.append(cell);
-    cell = document.createElement('th');
-    cell.textContent = products[i].shown;
-    row.append(cell);
-    cell = document.createElement('th');
-    cell.textContent = products[i].clicks;
-    row.append(cell);
+    dataset[0].push(products[i].name);
+    dataset[1].push(products[i].clicks);
+    dataset[2].push(products[i].shown);
     var diff = (products[i].clicks / products[i].shown) - .333;
-    console.log(i, diff);
     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
     var pvalue = getZPercent(zscore);
-    console.log(zscore);
-    console.log(Math.round(3.434234324, 2));
-    cell = document.createElement('th');
-    cell.textContent = Math.floor(pvalue * 100) + '%'
-    cell.setAttribute('style', 'background-color: rgba(0, 102, 30, ' + pvalue + ')');
-    row.append(cell);
-    tbody.append(row);
-  }
+    dataset[3].push((pvalue * 100).toFixed(1));}
+  console.log(dataset);
+  var ctx = document.getElementById("myChart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: dataset[0],
+          datasets: [{
+              label: 'Percentile',
+              data: dataset[3],
+              backgroundColor: 'green',
+              // backgroundColor: [
+              //     'rgba(255, 99, 132, 0.2)',
+              //     'rgba(54, 162, 235, 0.2)',
+              //     'rgba(255, 206, 86, 0.2)',
+              //     'rgba(75, 192, 192, 0.2)',
+              //     'rgba(153, 102, 255, 0.2)',
+              //     'rgba(255, 159, 64, 0.2)'
+              // ],
+              // borderColor: [
+              //     'rgba(255,99,132,1)',
+              //     'rgba(54, 162, 235, 1)',
+              //     'rgba(255, 206, 86, 1)',
+              //     'rgba(75, 192, 192, 1)',
+              //     'rgba(153, 102, 255, 1)',
+              //     'rgba(255, 159, 64, 1)'
+              // ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero:true
+                  }
+              }]
+          }
+      }
+    });
 }
+
+// function results() {
+//   //generate results
+//   display.innerHTML = '';
+//   heading.innerHTML = 'Results:';
+//   var row = document.createElement('tr');
+//   // percentile is more useful than percent
+//   var topRow = ['Image:', 'Appearences:', 'Clicks:', 'Percentile:'];
+//   for (i = 0; i < 4; i++) {
+//     var cell = document.createElement('th');
+//     cell.textContent = topRow[i];
+//     row.append(cell);
+//   }
+//   thead.append(row);
+//   for (i = 0; i < products.length; i++) {
+//     row = document.createElement('tr');
+//     cell = document.createElement('th');
+//     var img = document.createElement('img');
+//     img.setAttribute('src', products[i].url);
+//     img.setAttribute('width', '50%');
+//     cell.append(img);
+//     row.append(cell);
+//     cell = document.createElement('th');
+//     cell.textContent = products[i].shown;
+//     row.append(cell);
+//     cell = document.createElement('th');
+//     cell.textContent = products[i].clicks;
+//     row.append(cell);
+//     var diff = (products[i].clicks / products[i].shown) - .333;
+//     console.log(i, diff);
+//     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
+//     var pvalue = getZPercent(zscore);
+//     console.log(zscore);
+//     console.log(Math.round(3.434234324, 2));
+//     cell = document.createElement('th');
+//     cell.textContent = Math.floor(pvalue * 100) + '%';
+//     cell.setAttribute('style', 'background-color: rgba(0, 102, 30, ' + pvalue + ')');
+//     row.append(cell);
+//     tbody.append(row);
+//   }
+// }
 
 //source: https://stackoverflow.com/questions/16194730/seeking-a-statistical-javascript-function-to-return-p-value-from-a-z-score
 
