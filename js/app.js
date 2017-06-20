@@ -25,32 +25,53 @@ for (i = 0; i < filenames.length; i++) {
   // converts all file names into objects, accessible via array index
   var temp = new Product(filenames[i]);}
 
+//presents first set of choices
+choices();
+
+display.addEventListener('click', function (event) {
+  var answer = event.target.getAttribute('id');
+  products[answer].clicks += 1;
+  counter += 1;
+  // resets options
+  choices();
+  // subtle way to let user know that something has changed
+  document.getElementById('heading').style.color = generateRGB();
+  if (counter >= limit) {
+    results();
+  }
+});
+
+
 function render(key) {
+  // presents graphic based on key index
   var img = document.createElement('img');
   products[key].shown += 1;
   img.setAttribute('src', products[key].url);
   img.setAttribute('id', key);
   img.setAttribute('width', "30%");
-  display.append(img);
-  // render new graphic based on location in products array and position on page
-}
+  display.append(img);}
+
 
 function choices() {
+  // generates three choices
   display.innerHTML = '';
+  // restricted list removes entries older than one round
   restricted = restricted.slice(3);
+  // guarantees that key will fail on first try
   var key = restricted[0];
   for (i = 0; i < 3; i++) {
+    // if key has recently been chosen, pick again
     while (restricted.indexOf(key) > -1) {
       key = Math.floor(Math.random() * filenames.length);
     }
+    // add current key to restricted list and render new image
     restricted.push(key);
     render(key);
-  }
-}
+  }}
 
-choices();
 
 function generateRGB() {
+  // generates random color
   var r = Math.floor(Math.random() * 256);
   var g = Math.floor(Math.random() * 256);
   var b = Math.floor(Math.random() * 256);
@@ -58,13 +79,15 @@ function generateRGB() {
     return(generateRGB());
   } else {
     return('rgb(' + r + ', ' + g + ', ' + b + ')');
-  }
-}
+  }}
+
 
 function results() {
+  //generate results
   display.innerHTML = '';
   heading.innerHTML = 'Results:';
   var row = document.createElement('tr');
+  // percentile is more useful than percent
   var topRow = ['Image:', 'Appearences:', 'Clicks:', 'Percentile:'];
   for (i = 0; i < 4; i++) {
     var cell = document.createElement('th');
@@ -77,7 +100,7 @@ function results() {
     cell = document.createElement('th');
     var img = document.createElement('img');
     img.setAttribute('src', products[i].url);
-    img.setAttribute('width', '100%');
+    img.setAttribute('width', '50%');
     cell.append(img);
     row.append(cell);
     cell = document.createElement('th');
@@ -99,21 +122,6 @@ function results() {
     tbody.append(row);
   }
 }
-
-display.addEventListener('click', function (event) {
-  var answer = event.target.getAttribute('id');
-  console.log(products[answer]);
-  products[answer].clicks += 1;
-  counter += 1;
-  // heading.style.color = generateRGB();
-  choices();
-  document.getElementById('heading').style.color = generateRGB();
-  if (counter >= limit) {
-    results();
-  }
-});
-
-
 
 //source: https://stackoverflow.com/questions/16194730/seeking-a-statistical-javascript-function-to-return-p-value-from-a-z-score
 
