@@ -1,5 +1,18 @@
+* {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+
 img {
   border-radius: 15px;
   border: 5px solid black;
   margin: 2px;
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  width: 24%;
 }

@@ -1,28 +1,31 @@
 'use strict';
 
+// array of objects
 var products = [];
+// prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
+// number of clicks so far
 var counter = 0;
 var limit = 25;
-var temp;
 var i;
 var display = document.getElementById('display');
 var heading = document.getElementById('heading');
+var thead = document.getElementById('thead');
+var tbody = document.getElementById('tbody');
 var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
 var Product = function(filename) {
+  // generates new object from filename and pushes to an array
   this.url = 'img/' + filename;
   this.clicks = 0;
   this.shown = 0;
-  products.push(this);
-};
+  products.push(this);};
 
-for (var i = 0; i < filenames.length; i++) {
-  temp = new Product(filenames[i]);
-}
+for (i = 0; i < filenames.length; i++) {
+  // converts all file names into objects, accessible via array index
+  var temp = new Product(filenames[i]);}
 
 function render(key) {
-  console.log(products[key].url, i);
   var img = document.createElement('img');
   products[key].shown += 1;
   img.setAttribute('src', products[key].url);
@@ -59,7 +62,42 @@ function generateRGB() {
 }
 
 function results() {
-
+  display.innerHTML = '';
+  heading.innerHTML = 'Results:';
+  var row = document.createElement('tr');
+  var topRow = ['Image:', 'Appearences:', 'Clicks:', 'Percentile:'];
+  for (i = 0; i < 4; i++) {
+    var cell = document.createElement('th');
+    cell.textContent = topRow[i];
+    row.append(cell);
+  }
+  thead.append(row);
+  for (i = 0; i < products.length; i++) {
+    row = document.createElement('tr');
+    cell = document.createElement('th');
+    var img = document.createElement('img');
+    img.setAttribute('src', products[i].url);
+    img.setAttribute('width', '100%');
+    cell.append(img);
+    row.append(cell);
+    cell = document.createElement('th');
+    cell.textContent = products[i].shown;
+    row.append(cell);
+    cell = document.createElement('th');
+    cell.textContent = products[i].clicks;
+    row.append(cell);
+    var diff = (products[i].clicks / products[i].shown) - .333;
+    console.log(i, diff);
+    var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
+    var pvalue = getZPercent(zscore);
+    console.log(zscore);
+    console.log(Math.round(3.434234324, 2));
+    cell = document.createElement('th');
+    cell.textContent = Math.floor(pvalue * 100) + '%'
+    cell.setAttribute('style', 'background-color: rgba(0, 102, 30, ' + pvalue + ')');
+    row.append(cell);
+    tbody.append(row);
+  }
 }
 
 display.addEventListener('click', function (event) {
@@ -70,5 +108,36 @@ display.addEventListener('click', function (event) {
   // heading.style.color = generateRGB();
   choices();
   document.getElementById('heading').style.color = generateRGB();
-  if counter
+  if (counter >= limit) {
+    results();
+  }
 });
+
+
+
+//source: https://stackoverflow.com/questions/16194730/seeking-a-statistical-javascript-function-to-return-p-value-from-a-z-score
+
+function getZPercent(z) {
+    //z == number of standard deviations from the mean
+
+    //if z is greater than 6.5 standard deviations from the mean
+    //the number of significant digits will be outside of a reasonable
+    //range
+  if ( z < -6.5)
+    return 0.0;
+  if( z > 6.5)
+    return 1.0;
+
+  var factK = 1;
+  var sum = 0;
+  var term = 1;
+  var k = 0;
+  var loopStop = Math.exp(-23);
+  while(Math.abs(term) > loopStop){
+    term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z, k + 1) / factK;
+    sum += term;
+    k++;
+    factK *= k;}
+  sum += 0.5;
+  return sum;
+};
