@@ -96,6 +96,7 @@ function results() {
     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
     var pvalue = getZPercent(zscore);
     chartData[3].push((pvalue * 100).toFixed(1));
+    // generates different colors for each bar
     chartData[4].push(generateRGB());}
   console.log(chartData);
   var ctx = document.getElementById('myChart').getContext('2d');
