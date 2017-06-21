@@ -2,7 +2,7 @@
 
 // array of objects
 var products = [];
-var dataset = [[], [], [], [], []];
+var chartData = [[], [], [], [], []];
 // prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
 // number of clicks so far
@@ -89,25 +89,25 @@ function results() {
   display.innerHTML = '';
   heading.innerHTML = 'Results:';
   for (i = 0; i < products.length; i++) {
-    dataset[0].push(products[i].name + ' (' + products[i].clicks + '/' + products[i].shown + ')');
-    dataset[1].push(products[i].clicks);
-    dataset[2].push(products[i].shown);
+    chartData[0].push(products[i].name + ' (' + products[i].clicks + '/' + products[i].shown + ')');
+    chartData[1].push(products[i].clicks);
+    chartData[2].push(products[i].shown);
     var diff = (products[i].clicks / products[i].shown) - .333;
     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
     var pvalue = getZPercent(zscore);
-    dataset[3].push((pvalue * 100).toFixed(1));
-    dataset[4].push(generateRGB());}
-  console.log(dataset);
+    chartData[3].push((pvalue * 100).toFixed(1));
+    chartData[4].push(generateRGB());}
+  console.log(chartData);
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: dataset[0],
+      labels: chartData[0],
       datasets: [{
         label: 'Percentile',
-        data: dataset[3],
-        backgroundColor: dataset[4],
-        borderColor: dataset[4],
+        data: chartData[3],
+        backgroundColor: chartData[4],
+        borderColor: chartData[4],
         borderWidth: 1
       }]
     },
