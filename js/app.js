@@ -11,8 +11,6 @@ var limit = 25;
 var i;
 var display = document.getElementById('display');
 var heading = document.getElementById('heading');
-var thead = document.getElementById('thead');
-var tbody = document.getElementById('tbody');
 var filenames = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'usb.gif', 'water-can.jpg', 'wine-glass.jpg'];
 
 var Product = function(filename) {
@@ -100,93 +98,33 @@ function results() {
     dataset[3].push((pvalue * 100).toFixed(1));
     dataset[4].push(generateRGB());}
   console.log(dataset);
-  var ctx = document.getElementById("myChart").getContext('2d');
+  var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: dataset[0],
-          datasets: [{
-              label: 'Percentile',
-              data: dataset[3],
-              backgroundColor: dataset[4],
-              borderColor: dataset[4],
-              // backgroundColor: [
-              //     'rgba(255, 99, 132, 0.2)',
-              //     'rgba(54, 162, 235, 0.2)',
-              //     'rgba(255, 206, 86, 0.2)',
-              //     'rgba(75, 192, 192, 0.2)',
-              //     'rgba(153, 102, 255, 0.2)',
-              //     'rgba(255, 159, 64, 0.2)'
-              // ],
-              // borderColor: [
-              //     'rgba(255,99,132,1)',
-              //     'rgba(54, 162, 235, 1)',
-              //     'rgba(255, 206, 86, 1)',
-              //     'rgba(75, 192, 192, 1)',
-              //     'rgba(153, 102, 255, 1)',
-              //     'rgba(255, 159, 64, 1)'
-              // ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero:true
-                  }
-              }]
+    type: 'bar',
+    data: {
+      labels: dataset[0],
+      datasets: [{
+        label: 'Percentile',
+        data: dataset[3],
+        backgroundColor: dataset[4],
+        borderColor: dataset[4],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
           }
+        }]
       }
-    });
+    }
+  });
 }
-
-// function results() {
-//   //generate results
-//   display.innerHTML = '';
-//   heading.innerHTML = 'Results:';
-//   var row = document.createElement('tr');
-//   // percentile is more useful than percent
-//   var topRow = ['Image:', 'Appearences:', 'Clicks:', 'Percentile:'];
-//   for (i = 0; i < 4; i++) {
-//     var cell = document.createElement('th');
-//     cell.textContent = topRow[i];
-//     row.append(cell);
-//   }
-//   thead.append(row);
-//   for (i = 0; i < products.length; i++) {
-//     row = document.createElement('tr');
-//     cell = document.createElement('th');
-//     var img = document.createElement('img');
-//     img.setAttribute('src', products[i].url);
-//     img.setAttribute('width', '50%');
-//     cell.append(img);
-//     row.append(cell);
-//     cell = document.createElement('th');
-//     cell.textContent = products[i].shown;
-//     row.append(cell);
-//     cell = document.createElement('th');
-//     cell.textContent = products[i].clicks;
-//     row.append(cell);
-//     var diff = (products[i].clicks / products[i].shown) - .333;
-//     console.log(i, diff);
-//     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
-//     var pvalue = getZPercent(zscore);
-//     console.log(zscore);
-//     console.log(Math.round(3.434234324, 2));
-//     cell = document.createElement('th');
-//     cell.textContent = Math.floor(pvalue * 100) + '%';
-//     cell.setAttribute('style', 'background-color: rgba(0, 102, 30, ' + pvalue + ')');
-//     row.append(cell);
-//     tbody.append(row);
-//   }
-// }
-
-//source: https://stackoverflow.com/questions/16194730/seeking-a-statistical-javascript-function-to-return-p-value-from-a-z-score
 
 function getZPercent(z) {
     //z == number of standard deviations from the mean
-
     //if z is greater than 6.5 standard deviations from the mean
     //the number of significant digits will be outside of a reasonable
     //range
@@ -194,7 +132,6 @@ function getZPercent(z) {
     return 0.0;
   if( z > 6.5)
     return 1.0;
-
   var factK = 1;
   var sum = 0;
   var term = 1;
