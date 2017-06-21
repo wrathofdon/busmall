@@ -2,7 +2,7 @@
 
 // array of objects
 var products = [];
-var dataset = [[], [], [], []];
+var dataset = [[], [], [], [], []];
 // prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
 // number of clicks so far
@@ -78,8 +78,8 @@ function choices() {
 function generateRGB() {
   // generates random color
   var r = Math.floor(Math.random() * 256);
-  var g = Math.floor(Math.random() * 256);
-  var b = Math.floor(Math.random() * 256);
+  var g = Math.floor(Math.random() * 246);
+  var b = Math.floor(Math.random() * 246);
   if (r == g || g == b || r == b) {
     return(generateRGB());
   } else {
@@ -91,13 +91,14 @@ function results() {
   display.innerHTML = '';
   heading.innerHTML = 'Results:';
   for (i = 0; i < products.length; i++) {
-    dataset[0].push(products[i].name);
+    dataset[0].push(products[i].name + ' (' + products[i].clicks + '/' + products[i].shown + ')');
     dataset[1].push(products[i].clicks);
     dataset[2].push(products[i].shown);
     var diff = (products[i].clicks / products[i].shown) - .333;
     var zscore = diff / (0.471 / Math.sqrt(products[i].shown));
     var pvalue = getZPercent(zscore);
-    dataset[3].push((pvalue * 100).toFixed(1));}
+    dataset[3].push((pvalue * 100).toFixed(1));
+    dataset[4].push(generateRGB());}
   console.log(dataset);
   var ctx = document.getElementById("myChart").getContext('2d');
   var myChart = new Chart(ctx, {
@@ -107,7 +108,8 @@ function results() {
           datasets: [{
               label: 'Percentile',
               data: dataset[3],
-              backgroundColor: 'green',
+              backgroundColor: dataset[4],
+              borderColor: dataset[4],
               // backgroundColor: [
               //     'rgba(255, 99, 132, 0.2)',
               //     'rgba(54, 162, 235, 0.2)',
