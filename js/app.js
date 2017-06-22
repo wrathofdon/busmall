@@ -33,7 +33,7 @@ var Product = function(filename) {
 
 for (i = 0; i < filenames.length; i++) {
   // converts all file names into objects, accessible via array index
-  var temp = new Product(filenames[i]);}
+  new Product(filenames[i]);}
 
 //presents first set of choices
 choices();
@@ -135,7 +135,9 @@ function results() {
       }
     }
   });
+  console.log(myChart);
 }
+
 
 function getZPercent(z) {
     //z == number of standard deviations from the mean
