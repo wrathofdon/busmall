@@ -24,7 +24,7 @@ var Product = function(filename) {
 
 for (i = 0; i < filenames.length; i++) {
   // converts all file names into objects, accessible via array index
-  var temp = new Product(filenames[i]);}
+  new Product(filenames[i]);}
 
 //presents first set of choices
 choices();
@@ -119,7 +119,7 @@ function results() {
     console.log(zscore);
     console.log(Math.round(3.434234324, 2));
     cell = document.createElement('th');
-    cell.textContent = Math.floor(pvalue * 100) + '%'
+    cell.textContent = Math.floor(pvalue * 100) + '%';
     cell.setAttribute('style', 'background-color: rgba(0, 102, 30, ' + pvalue + ')');
     row.append(cell);
     tbody.append(row);
