@@ -6,10 +6,15 @@ var chartData = [[], [], [], [], []];
 // prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
 // number of clicks so far
-var counter = 0;
+var storage = localStorage.getItem('counter');;
+if (storage) {
+  var counter = parseInt(storage);
+} else {
+  counter = 0;
+}
+
 var limit = 25;
 var i;
-var storage;
 var toStore;
 var display = document.getElementById('display');
 var heading = document.getElementById('heading');
@@ -42,6 +47,7 @@ display.addEventListener('click', function (event) {
   var answer = event.target.getAttribute('id');
   products[answer].clicks += 1;
   counter += 1;
+  localStorage.setItem('counter', counter);
   for (i = 3; i < 6; i++) {
     toStore = products[restricted[i]];
     localStorage.setItem(toStore.name, toStore.clicks + ',' + toStore.shown);
@@ -50,7 +56,7 @@ display.addEventListener('click', function (event) {
   choices();
   // subtle way to let user know that something has changed
   document.getElementById('heading').style.color = generateRGB();
-  if (counter >= limit) {
+  if (counter % limit == 0) {
     results();
   }
 });
