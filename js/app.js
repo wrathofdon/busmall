@@ -12,7 +12,6 @@ if (storage) {
 } else {
   counter = 0;
 }
-
 var limit = 25;
 var i;
 var toStore;
