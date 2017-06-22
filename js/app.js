@@ -19,15 +19,15 @@ var Product = function(filename) {
   // generates new object from filename and pushes to an array
   this.name = filename.slice(0, filename.indexOf('.'));
   this.url = 'img/' + filename;
-  this.clicks = 0;
+  this.pvalue = 0;
   storage = localStorage.getItem(this.name);
   if (storage) {
     storage = storage.split(',');
     this.clicks = parseInt(storage[0]);
     this.shown = parseInt(storage[1]);
   } else {
+    this.clicks = 0;
     this.shown = 0;
-    this.pvalue = 0;
   }
   products.push(this);};
 
