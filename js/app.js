@@ -6,10 +6,14 @@ var chartData = [[], [], [], [], []];
 // prevents excessive repetition
 var restricted = [null, null, null, null, null, null];
 // number of clicks so far
-var counter = 0;
+var storage = localStorage.getItem('counter');;
+if (storage) {
+  var counter = parseInt(storage);
+} else {
+  counter = 0;
+}
 var limit = 25;
 var i;
-var storage;
 var toStore;
 var display = document.getElementById('display');
 var heading = document.getElementById('heading');
@@ -19,21 +23,21 @@ var Product = function(filename) {
   // generates new object from filename and pushes to an array
   this.name = filename.slice(0, filename.indexOf('.'));
   this.url = 'img/' + filename;
-  this.clicks = 0;
+  this.pvalue = 0;
   storage = localStorage.getItem(this.name);
   if (storage) {
     storage = storage.split(',');
     this.clicks = parseInt(storage[0]);
     this.shown = parseInt(storage[1]);
   } else {
+    this.clicks = 0;
     this.shown = 0;
-    this.pvalue = 0;
   }
   products.push(this);};
 
 for (i = 0; i < filenames.length; i++) {
   // converts all file names into objects, accessible via array index
-  var temp = new Product(filenames[i]);}
+  new Product(filenames[i]);}
 
 //presents first set of choices
 choices();
@@ -42,6 +46,7 @@ display.addEventListener('click', function (event) {
   var answer = event.target.getAttribute('id');
   products[answer].clicks += 1;
   counter += 1;
+  localStorage.setItem('counter', counter);
   for (i = 3; i < 6; i++) {
     toStore = products[restricted[i]];
     localStorage.setItem(toStore.name, toStore.clicks + ',' + toStore.shown);
@@ -50,7 +55,7 @@ display.addEventListener('click', function (event) {
   choices();
   // subtle way to let user know that something has changed
   document.getElementById('heading').style.color = generateRGB();
-  if (counter >= limit) {
+  if (counter % limit == 0) {
     results();
   }
 });
@@ -135,7 +140,9 @@ function results() {
       }
     }
   });
+  console.log(myChart);
 }
+
 
 function getZPercent(z) {
     //z == number of standard deviations from the mean
